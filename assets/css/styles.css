@@ -1889,3 +1889,48 @@ body[data-lang="en"] .floating-contact {
         border: 1px solid #ccc !important;
     }
 }
+
+
+/* إضافة إلى media queries الموجودة للموبايل */
+
+@media (max-width: 768px) {
+    /* باقي القواعد الموجودة... */
+    
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+        justify-items: center; /* توسيط الكاردز في الـ grid */
+    }
+    
+    .glass-card {
+        text-align: center; /* توسيط النصوص داخل الكارد */
+        max-width: 400px; /* حد أقصى للعرض */
+        width: 100%;
+    }
+    
+    .card-icon {
+        margin: 0 auto var(--space-lg) auto; /* توسيط الأيقونة */
+    }
+    
+    .card-tech {
+        justify-content: center; /* توسيط التاجز */
+    }
+}
+
+@media (max-width: 480px) {
+    /* باقي القواعد الموجودة... */
+    
+    .glass-card {
+        text-align: center;
+        max-width: 350px;
+        padding: var(--space-lg) var(--space-md); /* تقليل الـ padding قليلاً */
+    }
+    
+    .card-title {
+        font-size: 1.3em; /* تقليل حجم الخط قليلاً للموبايل الصغير */
+    }
+    
+    .card-description {
+        font-size: 0.95em;
+    }
+}
