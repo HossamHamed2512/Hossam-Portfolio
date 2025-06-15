@@ -221,18 +221,6 @@ function startMainAnimations() {
         ease: "power2.out",
       },
       "-=0.3"
-    )
-    
-    .from(
-      ".social-link",
-      {
-        duration: 0.6,
-        scale: 0,
-        opacity: 0,
-        stagger: 0.1,
-        ease: "back.out(1.7)",
-      },
-      "-=0.3"
     );
 
   // Animate floating contact buttons
