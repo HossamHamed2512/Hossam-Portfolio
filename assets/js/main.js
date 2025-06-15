@@ -222,18 +222,7 @@ function startMainAnimations() {
       },
       "-=0.3"
     )
-    .from(
-      ".stat-card",
-      {
-        duration: 0.8,
-        y: 40,
-        opacity: 0,
-        rotation: 5,
-        stagger: 0.1,
-        ease: "back.out(1.7)",
-      },
-      "-=0.4"
-    )
+    
     .from(
       ".social-link",
       {
