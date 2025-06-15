@@ -774,6 +774,7 @@ body[data-lang="en"] .content[data-lang="en"] {
     position: relative;
     z-index: 2;
     max-width: 800px;
+    margin-inline: auto;
 }
 
 /* Profile */
