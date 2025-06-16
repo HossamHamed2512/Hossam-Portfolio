@@ -13,6 +13,16 @@ const themeToggleInput = document.getElementById("themeToggle");
 const langToggleInput = document.getElementById("langToggle");
 const body = document.body;
 
+// Portfolio Elements
+const portfolioBtn = document.getElementById("portfolioBtn");
+const portfolioBtnEn = document.getElementById("portfolioBtnEn");
+const portfolioSection = document.getElementById("portfolioSection");
+const portfolioSectionEn = document.getElementById("portfolioSectionEn");
+const imageModal = document.getElementById("imageModal");
+const modalImage = document.getElementById("modalImage");
+const modalClose = document.getElementById("modalClose");
+const modalBackdrop = document.getElementById("modalBackdrop");
+
 // Initialize Application
 document.addEventListener("DOMContentLoaded", function () {
   initializeApp();
@@ -38,6 +48,7 @@ function initializeApp() {
   initFloatingButtons();
   initStatCounters();
   initParallaxEffects();
+  initPortfolioFeatures();
 
   // Performance optimizations
   initLazyLoading();
@@ -240,74 +251,6 @@ function startMainAnimations() {
   );
 }
 
-// Enhanced TypeWriter Effect
-function initTypeWriter() {
-  const textsAr = [
-    "مطور Frontend متخصص",
-    "خبير WordPress Development",
-    "مطور المتاجر الإلكترونية",
-    "مصمم واجهات تفاعلية",
-    "متخصص الحركات والتأثيرات",
-    "خبير تحسين أداء المواقع",
-    "مطور مواقع احترافية",
-  ];
-
-  const textsEn = [
-    "Specialized Frontend Developer",
-    "WordPress Development Expert",
-    "E-commerce Developer",
-    "Interactive UI Designer",
-    "Animation & Effects Specialist",
-    "Website Performance Expert",
-    "Professional Web Developer",
-  ];
-
-  const currentTexts = currentLanguage === "ar" ? textsAr : textsEn;
-  const elementId = currentLanguage === "ar" ? "typingTextAr" : "typingTextEn";
-  const element = document.getElementById(elementId);
-
-  if (!element) return;
-
-  let textIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  let isWaiting = false;
-
-  function type() {
-    if (isWaiting) {
-      setTimeout(type, 100);
-      return;
-    }
-
-    const currentText = currentTexts[textIndex];
-
-    if (isDeleting) {
-      element.textContent = currentText.substring(0, charIndex - 1);
-      charIndex--;
-    } else {
-      element.textContent = currentText.substring(0, charIndex + 1);
-      charIndex++;
-    }
-
-    let typeSpeed = isDeleting ? 50 : 100;
-
-    if (!isDeleting && charIndex === currentText.length) {
-      typeSpeed = 2500;
-      isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      textIndex = (textIndex + 1) % currentTexts.length;
-      typeSpeed = 800;
-    }
-
-    setTimeout(type, typeSpeed);
-  }
-
-  // Clear existing content and start typing
-  element.textContent = "";
-  type();
-}
-
 // Enhanced Scroll Progress
 function initScrollProgress() {
   function updateScrollProgress() {
@@ -334,6 +277,193 @@ function initScrollProgress() {
   }
 
   window.addEventListener("scroll", handleScroll, { passive: true });
+}
+
+// Portfolio Features
+function initPortfolioFeatures() {
+  // Portfolio button event listeners
+  if (portfolioBtn) {
+    portfolioBtn.addEventListener("click", () => {
+      togglePortfolio("ar");
+    });
+  }
+
+  if (portfolioBtnEn) {
+    portfolioBtnEn.addEventListener("click", () => {
+      togglePortfolio("en");
+    });
+  }
+
+  // Portfolio items click handlers
+  const portfolioItems = document.querySelectorAll(".portfolio-item");
+  portfolioItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const fullImageSrc = item.getAttribute("data-full-image");
+      if (fullImageSrc) {
+        openImageModal(fullImageSrc);
+      }
+    });
+
+    // Add hover effects
+    item.addEventListener("mouseenter", () => {
+      gsap.to(item, {
+        scale: 1.05,
+        rotationY: 5,
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    });
+
+    item.addEventListener("mouseleave", () => {
+      gsap.to(item, {
+        scale: 1,
+        rotationY: 0,
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    });
+  });
+
+  // Modal event listeners
+  if (modalClose) {
+    modalClose.addEventListener("click", closeImageModal);
+  }
+
+  if (modalBackdrop) {
+    modalBackdrop.addEventListener("click", closeImageModal);
+  }
+
+  // Close modal with Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && imageModal.classList.contains("show")) {
+      closeImageModal();
+    }
+  });
+}
+
+function togglePortfolio(lang) {
+  const targetSection = lang === "ar" ? portfolioSection : portfolioSectionEn;
+  const isCurrentlyVisible = targetSection.classList.contains("show");
+
+  if (isCurrentlyVisible) {
+    // Hide portfolio
+    gsap.to(targetSection, {
+      opacity: 0,
+      y: 50,
+      duration: 0.5,
+      ease: "power2.out",
+      onComplete: () => {
+        targetSection.classList.remove("show");
+        targetSection.style.display = "none";
+      },
+    });
+  } else {
+    // Show portfolio
+    targetSection.style.display = "block";
+    targetSection.classList.add("show");
+
+    gsap.fromTo(
+      targetSection,
+      {
+        opacity: 0,
+        y: 50,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      }
+    );
+
+    // Animate portfolio items
+    const portfolioItems = targetSection.querySelectorAll(".portfolio-item");
+    gsap.fromTo(
+      portfolioItems,
+      {
+        opacity: 0,
+        y: 30,
+        scale: 0.8,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        delay: 0.3,
+        ease: "back.out(1.7)",
+      }
+    );
+
+    // Scroll to portfolio section
+    gsap.to(window, {
+      duration: 1,
+      scrollTo: {
+        y: targetSection,
+        offsetY: 100,
+      },
+      ease: "power3.inOut",
+    });
+  }
+}
+
+function openImageModal(imageSrc) {
+  modalImage.src = imageSrc;
+  imageModal.classList.add("show");
+
+  // Prevent body scroll
+  document.body.style.overflow = "hidden";
+
+  // Animate modal entrance
+  gsap.fromTo(
+    imageModal,
+    {
+      opacity: 0,
+    },
+    {
+      opacity: 1,
+      duration: 0.3,
+      ease: "power2.out",
+    }
+  );
+
+  gsap.fromTo(
+    ".modal-content",
+    {
+      scale: 0.8,
+      opacity: 0,
+    },
+    {
+      scale: 1,
+      opacity: 1,
+      duration: 0.4,
+      delay: 0.1,
+      ease: "back.out(1.7)",
+    }
+  );
+}
+
+function closeImageModal() {
+  // Animate modal exit
+  gsap.to(imageModal, {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.out",
+    onComplete: () => {
+      imageModal.classList.remove("show");
+      modalImage.src = "";
+      // Restore body scroll
+      document.body.style.overflow = "";
+    },
+  });
+
+  gsap.to(".modal-content", {
+    scale: 0.8,
+    opacity: 0,
+    duration: 0.2,
+    ease: "power2.out",
+  });
 }
 
 // GSAP Scroll Animations
@@ -473,6 +603,27 @@ function initGSAPAnimations() {
       scrollTrigger: {
         trigger: ".cta-section",
         start: "top 85%",
+        toggleActions: "play none none reverse",
+      },
+    }
+  );
+
+  // Animate portfolio button
+  gsap.fromTo(
+    ".portfolio-btn",
+    {
+      scale: 0.8,
+      opacity: 0,
+    },
+    {
+      scale: 1,
+      opacity: 1,
+      duration: 1,
+      delay: 0.5,
+      ease: "back.out(1.7)",
+      scrollTrigger: {
+        trigger: ".portfolio-btn-container",
+        start: "top 90%",
         toggleActions: "play none none reverse",
       },
     }
@@ -930,6 +1081,18 @@ function initKeyboardNavigation() {
           setTheme(newTheme, true);
         }
         break;
+
+      case "p":
+      case "P":
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          const currentBtn =
+            currentLanguage === "ar" ? portfolioBtn : portfolioBtnEn;
+          if (currentBtn) {
+            currentBtn.click();
+          }
+        }
+        break;
     }
   });
 }
@@ -958,6 +1121,9 @@ window.addEventListener("beforeunload", () => {
 window.PortfolioApp = {
   setLanguage,
   setTheme,
+  togglePortfolio,
+  openImageModal,
+  closeImageModal,
   currentLanguage: () => currentLanguage,
   currentTheme: () => currentTheme,
 };
