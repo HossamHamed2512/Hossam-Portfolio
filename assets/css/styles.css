@@ -162,13 +162,14 @@ body[data-lang="en"] .content[data-lang="en"] {
 }
 
 .lang-btn {
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 16px;
     background: transparent;
     border: none;
-    border-radius: 14px;
+    border-radius: 50%;
     cursor: pointer;
     font-family: 'Alexandria', sans-serif;
     font-size: 0.85em;
@@ -177,7 +178,6 @@ body[data-lang="en"] .content[data-lang="en"] {
     transition: all var(--transition-normal);
     position: relative;
     overflow: hidden;
-    min-width: 50px;
 }
 
 .lang-btn::before {
@@ -189,7 +189,7 @@ body[data-lang="en"] .content[data-lang="en"] {
     height: 100%;
     background: var(--gradient-accent);
     transform: scale(0);
-    border-radius: 14px;
+    border-radius: 50%;
     transition: transform 0.3s ease;
     z-index: -1;
 }
@@ -200,8 +200,8 @@ body[data-lang="en"] .content[data-lang="en"] {
 
 .lang-btn:hover {
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
 }
 
 .lang-btn.active {
@@ -212,6 +212,10 @@ body[data-lang="en"] .content[data-lang="en"] {
 
 .lang-btn.active::before {
     transform: scale(1);
+}
+
+.lang-btn:active {
+    transform: scale(0.95);
 }
 
 .lang-text {
@@ -1389,30 +1393,61 @@ body[data-lang="en"] .floating-contact {
         padding: var(--space-sm);
     }
 
+    /* Platform items - perfectly centered */
     .platforms-grid {
+        display: flex;
+        flex-wrap: wrap;
         justify-content: center;
+        align-items: center;
         gap: var(--space-md);
+        margin: 0 auto;
+        max-width: 100%;
     }
 
     .platform-item {
         flex: 0 1 120px;
         min-width: 100px;
-    }
-
-    .services-grid {
+        margin: 0 auto;
+        display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
+    }
+
+    /* Service items - keep in row layout */
+    .services-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
         gap: var(--space-md);
     }
 
     .service-item {
-        flex: none;
-        width: 100%;
-        max-width: 400px;
-        min-width: auto;
-        flex-direction: column;
-        text-align: center;
+        flex: 0 1 calc(50% - var(--space-md));
+        width: auto;
+        max-width: 300px;
+        min-width: 280px;
+        flex-direction: row;
+        text-align: left;
         gap: var(--space-md);
+        padding: var(--space-md);
+    }
+
+    .service-icon {
+        font-size: 1.5em;
+        width: 50px;
+        height: 50px;
+        flex-shrink: 0;
+    }
+
+    .service-title {
+        font-size: 1.1em;
+    }
+
+    .service-desc {
+        font-size: 0.9em;
     }
 
     .portfolio-grid {
@@ -1466,6 +1501,40 @@ body[data-lang="en"] .floating-contact {
         min-width: 80px;
         padding: var(--space-sm) 8px;
         font-size: 0.8em;
+    }
+
+    /* Platform items - smaller screens */
+    .platforms-grid {
+        justify-content: center;
+        gap: var(--space-sm);
+        padding: 0 var(--space-sm);
+    }
+
+    .platform-item {
+        flex: 0 1 100px;
+        min-width: 90px;
+        max-width: 120px;
+    }
+
+    /* Service items - stack vertically on very small screens */
+    .services-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .service-item {
+        flex: none;
+        width: 100%;
+        max-width: 350px;
+        min-width: auto;
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-sm);
+        padding: var(--space-md);
+    }
+
+    .service-icon {
+        margin: 0 auto;
     }
 
     .portfolio-grid {
